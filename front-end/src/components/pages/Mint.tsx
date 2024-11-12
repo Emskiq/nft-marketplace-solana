@@ -13,6 +13,7 @@ import {
 import { AnchorProvider, utils } from '@coral-xyz/anchor'
 import Input from '../ui/Input'
 import { getNftMarketplaceProgram, TOKEN_METADATA_PROGRAM_ID } from '../../api/nftMarketplaceExports'
+import axios from 'axios';
 import Modal from '../ui/Modal'
 
 const network = clusterApiUrl('devnet')
@@ -160,6 +161,15 @@ const Mint: React.FC = () => {
         </div>
       )
       setIsModalOpen(true)
+
+      const ownerAddress = walletPublicKey.toBase58();
+
+      // Send POST request to your backend to store the NFT
+      await axios.post('http://localhost:5000/mint-nft', {
+            mint_address: mintAddress,
+            owner_address: ownerAddress,
+        });
+
     } catch (err: any) {
       console.error('Error minting NFT', err)
       setError('Failed to mint NFT.')

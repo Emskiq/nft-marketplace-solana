@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-nft_marketplace = "J9FYn1sG3navkfA4y3sjJw56xjqAhei3xoW5QqBqqM8e"
+nft_marketplace = "hPd5fM2UuWmU36aE1Cx3HmhScY9fWFswVwe53R2HWZs"
 
 [registry]
 url = "https://api.apr.dev"

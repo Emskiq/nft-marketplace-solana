@@ -95,12 +95,12 @@ describe("test", () => {
         }
         assert.isTrue(logsEmitted);
 
-        const txMetadata = await provider.connection.getParsedTransaction(tx_sig_mint, "confirmed")
-        const eventParser = new anchor.EventParser(program.programId, new anchor.BorshCoder(program.idl));
-        const events = eventParser.parseLogs(txMetadata.meta.logMessages);
+        const txMetadata = await provider.connection.getParsedTransaction(tx_sig_metadata, "confirmed")
+        const eventParserMetadata = new anchor.EventParser(program.programId, new anchor.BorshCoder(program.idl));
+        const eventsMetadata = eventParserMetadata.parseLogs(txMetadata.meta.logMessages);
 
         logsEmitted = false
-        for (let event of events) {
+        for (let event of eventsMetadata) {
             logsEmitted = true;
             assert.strictEqual(mintKeypair.publicKey, event.data.mint);
         }

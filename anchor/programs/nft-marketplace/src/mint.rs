@@ -1,15 +1,14 @@
 use {
-    anchor_lang::{
+    crate::__private::__global::sell, anchor_lang::{
         prelude::*, solana_program::native_token::LAMPORTS_PER_SOL, system_program
-    },
-    anchor_spl::{
+    }, anchor_spl::{
         associated_token::{
             self, AssociatedToken
         },
         token::{
             self, Token,
         }
-    },
+    }
 };
 
 
@@ -81,6 +80,7 @@ pub fn mint(
     emit!(MintSucessfulEvent {
         mint: ctx.accounts.mint.key(),
         owner: ctx.accounts.mint_authority.key(),
+        marketplace: *ctx.program_id,
     });
 
     Ok(())
@@ -110,4 +110,5 @@ pub struct MintNft<'info> {
 pub struct MintSucessfulEvent {
     pub mint: Pubkey,
     pub owner: Pubkey,
+    pub marketplace: Pubkey,
 }

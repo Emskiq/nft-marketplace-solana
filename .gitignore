@@ -1,7 +1,78 @@
-.anchor
+# Ignore node_modules directories
+node_modules/
+
+# Ignore Rust build artifacts
+target/
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+Cargo.lock
+
+# Ignore environment variable files
+.env
+.env.local
+
+# Ignore log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore IDE/editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore OS-generated files
 .DS_Store
-target
-**/*.rs.bk
-node_modules
-test-ledger
-.yarn
+Thumbs.db
+
+# Ignore coverage reports
+coverage/
+
+# Ignore compiled binary files
+*.o
+*.so
+*.exe
+*.dll
+
+# Ignore test output
+test-results/
+
+# Ignore NPM and Yarn cache directories
+.npm/
+.yarn/
+
+# Ignore temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+
+# Ignore build artifacts and idl from Anchor
+anchor/target/
+anchor/idl/
+anchor/.anchor/
+
+# Ignore program build artifacts
+programs/**/target/
+programs/**/dist/
+programs/**/node_modules/
+
+# Ignore front-end build artifacts
+front-end/node_modules/
+front-end/build/
+front-end/dist/
+
+# Ignore back-end build artifacts
+back-end/target/
+back-end/node_modules/
+

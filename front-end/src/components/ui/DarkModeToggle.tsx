@@ -2,13 +2,18 @@
 import React, { useEffect, useState } from 'react'
 
 const DarkModeToggle: React.FC = () => {
-  const [isDark, setIsDark] = useState<boolean>(false)
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    const storedMode = localStorage.getItem('theme')
+    return storedMode === 'dark' ? true : false
+  })
 
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
     } else {
       document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
     }
   }, [isDark])
 
@@ -24,4 +29,3 @@ const DarkModeToggle: React.FC = () => {
 }
 
 export default DarkModeToggle
-

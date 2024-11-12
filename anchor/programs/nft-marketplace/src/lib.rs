@@ -3,13 +3,13 @@ use anchor_lang::prelude::*;
 pub mod mint;
 pub mod metadata;
 pub mod sell;
+// pub mod list;
 
 use mint::*;
 use metadata::*;
 use sell::*;
 
-// TODO: Replace
-declare_id!("J9FYn1sG3navkfA4y3sjJw56xjqAhei3xoW5QqBqqM8e");
+declare_id!("hPd5fM2UuWmU36aE1Cx3HmhScY9fWFswVwe53R2HWZs");
 
 #[program]
 pub mod nft_marketplace {
@@ -35,13 +35,4 @@ pub mod nft_marketplace {
     ) -> Result<()> {
         sell::sell(ctx, sell_amount)
     }
-
-    // TODO:
-    // pub fn list(
-    //     ctx: Context<ListNfts>,
-    // ) -> Result<()> {
-    //     // TODO: See whether that will be correct
-    //     // list::list(ctx, sell_amount)
-    //     Ok(())
-    // }
 }
