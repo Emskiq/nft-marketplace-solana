@@ -1,5 +1,5 @@
 use {
-    crate::__private::__global::sell, anchor_lang::{
+    anchor_lang::{
         prelude::*, solana_program::native_token::LAMPORTS_PER_SOL, system_program
     }, anchor_spl::{
         associated_token::{

@@ -1,13 +1,10 @@
 use anchor_lang::prelude::*;
 
-pub mod mint;
-pub mod metadata;
-pub mod sell;
-// pub mod list;
+use crate::instructions::*;
 
-use mint::*;
-use metadata::*;
-use sell::*;
+pub mod instructions;
+pub mod state;
+pub mod errors;
 
 declare_id!("hPd5fM2UuWmU36aE1Cx3HmhScY9fWFswVwe53R2HWZs");
 
@@ -15,6 +12,8 @@ declare_id!("hPd5fM2UuWmU36aE1Cx3HmhScY9fWFswVwe53R2HWZs");
 pub mod nft_marketplace {
     use super::*;
 
+    // XXX: These 2 intructions - mint and metadata were
+    //      separated because transaction size was exceeded
     pub fn mint(
         ctx: Context<MintNft>,
     ) -> Result<()> {
@@ -29,10 +28,18 @@ pub mod nft_marketplace {
         metadata::create_metadata(ctx, title, uri)
     }
 
-    pub fn sell(
-        ctx: Context<SellNft>,
-        sell_amount: u64,
+    // List NFT for sale
+    pub fn list_nft(
+        ctx: Context<ListNft>,
+        price: u64,
     ) -> Result<()> {
-        sell::sell(ctx, sell_amount)
+        list::list_nft(ctx, price)
+    }
+
+    // Buy listed NFT
+    pub fn buy_nft(
+        ctx: Context<BuyNft>,
+    ) -> Result<()> {
+        buy::buy(ctx)
     }
 }

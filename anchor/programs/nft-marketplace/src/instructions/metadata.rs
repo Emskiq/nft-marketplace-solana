@@ -47,7 +47,7 @@ pub fn create_metadata(
                 Creator {
                     address: ctx.accounts.mint_authority.key(),
                     verified: true,
-                    share: 100, // TODO: See whether that needs to be changed
+                    share: 100,
                 },
             ]),
             collection: None,
@@ -58,7 +58,7 @@ pub fn create_metadata(
         None,
     )?;
 
-    msg!("Creating master edition metadata account... (TODO)");
+    msg!("Creating master edition metadata account...");
     msg!("Master edition metadata account address: {}", &ctx.accounts.master_edition.to_account_info().key());
     create_master_edition_v3(
         CpiContext::new(

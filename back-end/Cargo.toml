@@ -21,4 +21,5 @@ features = [
     "runtime-tokio-rustls",
     "macros",
     "postgres",
+    "bigdecimal",
 ]

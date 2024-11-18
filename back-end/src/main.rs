@@ -39,10 +39,12 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             // register HTTP requests handlers
             .service(endpoints::get_nfts)
-            .service(endpoints::options_get_nfts)
-            .service(endpoints::create_nft)
-            .service(endpoints::options_create_nft)
+            .service(endpoints::get_listed_nfts)
+            .service(endpoints::get_nfts_for_user)
             .service(endpoints::get_nft)
+            .service(endpoints::create_nft)
+            .service(endpoints::update_nft)
+            .service(endpoints::list_nft)
     })
     .bind(format!("127.0.0.1:{}", api_port))?
     .run()

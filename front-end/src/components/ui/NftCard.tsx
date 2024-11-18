@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
 import { PublicKey } from '@solana/web3.js';
 import { fetchDigitalAsset, mplTokenMetadata } from '@metaplex-foundation/mpl-token-metadata';
@@ -7,6 +8,7 @@ interface NftData {
     id: number;
     mint_address: string;
     owner_address: string;
+    price: string;
 }
 
 interface JsonMetadata {
@@ -83,27 +85,29 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     }
 
     return (
-        <div className="border rounded shadow hover:shadow-lg transition-shadow duration-200">
-            <img
-                src={jsonMetadata.image || ''}
-                alt={jsonMetadata.name || 'NFT Image'}
-                className="w-full h-64 object-cover rounded-t"
-            />
-            <div className="p-4">
-                <h3 className="text-lg font-semibold mb-2">{jsonMetadata.name || 'Untitled NFT'}</h3>
-                <p className="text-gray-600 mb-4">
-                    {jsonMetadata.description || 'No description available.'}
-                </p>
-                <div className="flex justify-between items-center">
-                    <p className="text-sm text-gray-500">Symbol:</p>
-                    <p className="text-sm text-gray-700 truncate w-40">{jsonMetadata.symbol}</p>
-                </div>
-                <div className="flex justify-between items-center mt-2">
-                    <p className="text-sm text-gray-500">Mint Address:</p>
-                    <p className="text-sm text-gray-700 truncate w-40">{nft.mint_address}</p>
+        <Link to={`/nft/${nft.id}`}>
+            <div className="border rounded shadow hover:shadow-lg transition-shadow duration-200">
+                <img
+                    src={jsonMetadata.image || ''}
+                    alt={jsonMetadata.name || 'NFT Image'}
+                    className="w-full h-64 object-cover rounded-t"
+                />
+                <div className="p-4">
+                    <h3 className="text-lg font-semibold mb-2">{jsonMetadata.name || 'Untitled NFT'}</h3>
+                    <p className="text-gray-600 mb-4">
+                        Price: {nft.price} SOL
+                    </p>
+                    <div className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500">Symbol:</p>
+                        <p className="text-sm text-gray-700 truncate w-40">{jsonMetadata.symbol}</p>
+                    </div>
+                    <div className="flex justify-between items-center mt-2">
+                        <p className="text-sm text-gray-500">Mint Address:</p>
+                        <p className="text-sm text-gray-700 truncate w-40">{nft.mint_address}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 };
 

@@ -1,7 +1,7 @@
 // src/models.rs
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
-use bigdecimal::BigDecimal;
+use sqlx::types::BigDecimal;
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct Nft {
@@ -9,6 +9,7 @@ pub struct Nft {
     pub mint_address: String,
     pub owner_address: String,
     pub price: BigDecimal,
+    pub listed: bool,
 }
 
 #[derive(Serialize, Deserialize)]

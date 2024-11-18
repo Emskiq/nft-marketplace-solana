@@ -1,5 +1,5 @@
 import { AnchorProvider, Program } from '@coral-xyz/anchor'
-import { Cluster, PublicKey } from '@solana/web3.js'
+import { PublicKey } from '@solana/web3.js'
 import NftMarketplaceIDL from './nft_marketplace.json'
 import type { NftMarketplace } from './nft_marketplace'
 
