@@ -4,10 +4,10 @@ import axios from 'axios';
 import NftCard from '../ui/NftCard';
 
 interface NftData {
-    id: number;
     mint_address: string;
     owner_address: string;
     price: string;
+    listed: boolean;
 }
 
 const Profile: React.FC = () => {
@@ -77,7 +77,7 @@ const Profile: React.FC = () => {
             <h2 className="text-3xl font-bold mb-6">Your NFTs</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {nfts.map((nft) => (
-                    <NftCard key={nft.id} nft={nft} />
+                    <NftCard key={nft.mint_address} nft={nft} />
                 ))}
             </div>
         </div>

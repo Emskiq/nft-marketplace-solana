@@ -5,7 +5,6 @@ import { PublicKey } from '@solana/web3.js';
 import { fetchDigitalAsset, mplTokenMetadata } from '@metaplex-foundation/mpl-token-metadata';
 
 interface NftData {
-    id: number;
     mint_address: string;
     owner_address: string;
     price: string;
@@ -85,7 +84,7 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
     }
 
     return (
-        <Link to={`/nft/${nft.id}`}>
+        <Link to={`/nft/${nft.mint_address}`}>
             <div className="border rounded shadow hover:shadow-lg transition-shadow duration-200">
                 <img
                     src={jsonMetadata.image || ''}

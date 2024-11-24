@@ -163,13 +163,13 @@ const Mint: React.FC = () => {
       setIsModalOpen(true)
 
       const ownerAddress = walletPublicKey.toBase58();
-      const price = nftPrice.toString();
 
       // Send POST request to your backend to store the NFT
       await axios.post('http://localhost:5000/mint-nft', {
             mint_address: mintAddress,
             owner_address: ownerAddress,
-            price: price,
+            price: 0,
+            listed: false,
         });
 
     } catch (err: any) {

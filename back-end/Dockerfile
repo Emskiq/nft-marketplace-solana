@@ -1,37 +1,31 @@
-# Stage 1: Build the application
-FROM rust:1.82 AS builder
+# Use the official Rust image as the base for building
+FROM rust:latest AS build
 
-WORKDIR /usr/src/app
-
-# Copy the Cargo.toml and Cargo.lock files
-COPY Cargo.toml Cargo.lock ./
-
-# Create a dummy main.rs to build dependencies
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-
-# Build dependencies
-RUN cargo build --release && rm -rf src/target/release/deps/back_end*
+# Create a new directory for the app
+WORKDIR /app
 
 # Copy the source code
-COPY src ./src
+COPY . .
 
-# Build the application
-RUN cargo build --release
+# Install dependencies and build the application
+RUN apt-get update && \
+    apt-get install -y libpq-dev && \
+    cargo install diesel_cli --no-default-features --features postgres && \
+    cargo build --release
 
-# Stage 2: Create the runtime image
-FROM debian:buster-slim
+# Use a Rust base image
+FROM rust:latest
 
-# Install required system dependencies
-RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
+# Copy the built binary from the builder stage
+COPY --from=build /app/target/release/back-end /usr/local/bin/back-end
 
-WORKDIR /usr/src/app
+# Set environment variables (these can be overridden at runtime)
+ENV API_PORT=${API_PORT}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV FRONTEND_ORIGIN=${FRONTEND_ORIGIN}
 
-# Copy the compiled binary from the builder stage
-COPY --from=builder /usr/src/app/target/release/back-end .
-
-# Expose the backend port
+# Expose the port the server runs on
 EXPOSE 5000
 
-# Set the command to run the application
-CMD ["./back-end"]
-
+# Set the entrypoint
+CMD ["back-end"]

@@ -1,8 +1,45 @@
+# version: '3.8'
+#
+# services:
+#   db:
+#     image: postgres
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: nft_marketplace
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+#       - ./db_init:/docker-entrypoint-initdb.d
+#     ports:
+#       - "5433:5433"
+#
+#   backend:
+#     build: ./back-end
+#     environment:
+#       DATABASE_URL: postgres://postgres:postgres@db:5433/nft_marketplace
+#       FRONTEND_ORIGIN: http://localhost:5713
+#     ports:
+#       - "5000:5000"
+#     depends_on:
+#       - db
+#
+#   frontend:
+#     build: ./front-end
+#     environment:
+#       VITE_BACKEND_URL: http://localhost:5000
+#     ports:
+#       - "5173:5174"
+#     depends_on:
+#       - backend
+#
+# volumes:
+#   db_data:
+
 version: '3.8'
 
 services:
   db:
-    image: postgres:13
+    image: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -12,25 +49,35 @@ services:
       - ./db_init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
+    networks:
+      - nft_network
 
   backend:
     build: ./back-end
     environment:
-      DATABASE_URL: postgres://yourusername:yourpassword@db:5432/yourdatabase
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/nft_marketplace
+      FRONTEND_ORIGIN: http://localhost:5173
     ports:
-      - "8000:8000"
+      - "5000:5000"
     depends_on:
       - db
+    networks:
+      - nft_network
 
   frontend:
     build: ./front-end
     environment:
-      VITE_BACKEND_URL: http://backend:8000
+      VITE_BACKEND_URL: http://localhost:5000
     ports:
-      - "3000:3000"
+      - "5173:5173"
     depends_on:
       - backend
+    networks:
+      - nft_network
 
 volumes:
-  db_data:
+  db_data: {}
+
+networks:
+  nft_network: {}
 

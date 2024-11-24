@@ -16,7 +16,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/mint" element={<Mint />} />
-          <Route path="/nft/:id" element={<NftDetail />} />
+          <Route path="/nft/:mint" element={<NftDetail />} />
         </Routes>
       </div>
     </Router>

@@ -15,7 +15,6 @@ import * as anchor from '@coral-xyz/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 
 interface NftData {
-    id: number;
     mint_address: string;
     owner_address: string;
     price: string;
@@ -37,7 +36,7 @@ const NFT_MARKET_PLACE_SEED = "NFT_MARKETPLACE_EMSKIQ";
 const LISTED_NFT_SEED = "LISTED_NFT_EMSKIQ_SEED";
 
 const NftDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const { mint } = useParams<{ mint: string }>();
     const [nft, setNft] = useState<NftData | null>(null);
     const [jsonMetadata, setJsonMetadata] = useState<JsonMetadata | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
@@ -54,7 +53,7 @@ const NftDetail: React.FC = () => {
     const fetchNft = async () => {
         try {
             // Fetch NFT data from backend
-            const response = await axios.get(`http://localhost:5000/get-nft/${id}`);
+            const response = await axios.get(`http://localhost:5000/get-nft/${mint}`);
             const nftData = response.data as NftData;
             setNft(nftData);
 
@@ -85,7 +84,7 @@ const NftDetail: React.FC = () => {
 
     useEffect(() => {
         fetchNft();
-    }, [id]);
+    }, [mint]);
 
     if (loading) {
         return (

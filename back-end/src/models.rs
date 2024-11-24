@@ -1,20 +1,15 @@
-// src/models.rs
-use serde::{Deserialize, Serialize};
-use sqlx::FromRow;
-use sqlx::types::BigDecimal;
+use diesel::prelude::*;
+use diesel::deserialize::Queryable;
 
-#[derive(Serialize, Deserialize, FromRow)]
+use serde::{Deserialize, Serialize};
+use crate::schema::nfts;
+use bigdecimal::BigDecimal;
+
+#[derive(AsChangeset, Queryable, Insertable, Selectable, Serialize, Deserialize, Debug, Clone)]
+#[diesel(table_name = nfts)]
 pub struct Nft {
-    pub id: i32,
     pub mint_address: String,
     pub owner_address: String,
     pub price: BigDecimal,
     pub listed: bool,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct NewNft {
-    pub mint_address: String,
-    pub owner_address: String,
-    pub price: BigDecimal,
 }
