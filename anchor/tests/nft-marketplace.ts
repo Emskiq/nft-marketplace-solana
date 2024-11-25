@@ -132,7 +132,7 @@ describe("NFT Marketplace", () => {
         // };
         // await transferSolToBuyer();
 
-        // Airdrop SOL to seller and buyer
+        // Airdrop SOL to seller and buyer (wasn't working for me...)
         await airdrop(provider.connection, sellerKeypair.publicKey)
         await airdrop(provider.connection, buyerKeypair.publicKey);
 

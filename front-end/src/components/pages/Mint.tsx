@@ -25,7 +25,6 @@ const Mint: React.FC = () => {
 
   // State variables for the form inputs
   const [nftTitle, setNftTitle] = useState('')
-  const [nftPrice, setNftPrice] = useState('')
   const [nftUri, setNftUri] = useState('')
 
   const [message, setMessage] = useState('')
@@ -197,7 +196,7 @@ const Mint: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center mt-2">
-      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Mint Your NFT</h2>
+      <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Mint Your Real Estate NFT</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault()
@@ -213,17 +212,6 @@ const Mint: React.FC = () => {
           onChange={(e) => setNftTitle(e.target.value)}
           required
           placeholder="Enter NFT title"
-        />
-        <Input
-          label="NFT Price (SOL)"
-          id="nftPrice"
-          type="number"
-          value={nftPrice}
-          onChange={(e) => setNftPrice(e.target.value)}
-          required
-          placeholder="Enter price in SOL"
-          min="0"
-          step="0.01"
         />
         <Input
           label="Metadata URI"

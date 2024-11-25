@@ -12,9 +12,9 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16 items-center">
           {/* Left Side: Logo or Brand */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white">
-              NFT Marketplace
-            </Link>
+              <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white">
+                  Real Estate NFTs
+              </Link>
           </div>
 
           {/* Middle: Navigation Links */}

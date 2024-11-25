@@ -311,6 +311,11 @@ const NftDetail: React.FC = () => {
                             You are the owner of this NFT.
                         </p>
                     )}
+                    {isOwner && nft.listed && (
+                        <span className="inline-block bg-green-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            Listed for Sale
+                        </span>
+                    )}
                 </div>
             </div>
 
