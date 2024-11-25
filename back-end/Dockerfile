@@ -5,7 +5,15 @@ FROM rust:latest AS build
 WORKDIR /app
 
 # Copy the source code
-COPY . .
+# Copy the Cargo.toml and Cargo.lock to leverage Docker cache
+COPY Cargo.toml Cargo.lock ./
+
+# Copy the source code
+COPY src ./src
+
+# Copy migrations and diesel configuration
+COPY migrations ./migrations
+COPY diesel.toml .
 
 # Install dependencies and build the application
 RUN apt-get update && \
