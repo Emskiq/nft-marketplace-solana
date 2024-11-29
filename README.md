@@ -1,17 +1,32 @@
-
 # NFT Real Estate Marketplace
 
-Welcome to the NFT Real Estate Marketplace project! This platform allows users to mint, list, and trade real estate assets tokenized as NFTs on the Solana blockchain.
+Welcome to the **NFT Real Estate Marketplace** project! This platform allows users to mint, list, and trade real estate assets tokenized as NFTs on the Solana blockchain.
 
 ## Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Introduction to the Platform](#introduction-to-the-platform)
-3. [Building Docker Images and Starting Containers](#building-docker-images-and-starting-containers)
-4. [Manually Building and Running the Frontend and Backend](#manually-building-and-running-the-frontend-and-backend)
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites)
+3. [Project Structure Overview](#project-structure-overview)
+4. [Setting up the Project](#setting-up-the-project)
+   - [4.1 Building and Running with Docker Compose (easiest setup)](#41-building-and-running-with-docker-compose-easiest-setup)
+   - [4.2 Building and Running Each Docker Image Manually (easy)](#42-building-and-running-each-docker-image-manually-easy)
+   - [4.3 Manually Building and Running the Frontend and Backend](#43-manually-building-and-running-the-frontend-and-backend)
+   - [4.4 How to Use the Platform](#44-how-to-use-the-platform)
 5. [Overview of Solana Programs](#overview-of-solana-programs)
-6. [Running Anchor Tests](#running-anchor-tests)
-7. [Project Structure Overview](#project-structure-overview)
+6. [Tests](#tests)
+   - [6.1 Steps to Run Tests](#61-steps-to-run-tests)
+7. [Conclusion](#conclusion)
+
+---
+
+## Introduction
+
+The NFT Real Estate Marketplace is a decentralized application (dApp) built on the Solana blockchain. It allows users to:
+
+- **Mint Real Estate NFTs**: Tokenize real estate properties as NFTs.
+- **List NFTs for Sale**: Set a price and list your NFTs on the marketplace.
+- **Buy NFTs**: Browse listed NFTs and purchase them directly from the marketplace.
+- **View Owned NFTs**: Access a personalized profile to view all NFTs you own.
 
 ---
 
@@ -25,130 +40,228 @@ Before you begin, ensure you have met the following requirements:
   docker --version
   ```
 
+- **Docker Compose**: Usually included with Docker Desktop. Check your version with:
+
+  ```bash
+  docker-compose --version
+  ```
+
 - **Rust**: Install Rust and Cargo from [rustup.rs](https://rustup.rs/).
 
 - **Anchor**: Install Anchor CLI by following the [Anchor documentation](https://project-serum.github.io/anchor/getting-started/installation.html).
 
 - **Yarn**: Ensure you have Yarn installed for managing frontend dependencies.
 
+  ```bash
+  npm install --global yarn
+  ```
+
 - **Solana CLI**: Install Solana CLI tools from the [official documentation](https://docs.solana.com/cli/install-solana-cli-tools).
 
-- **PostgreSQL Port Availability**: Ensure that port `5432` (the default PostgreSQL port) is not being used by another database instance on your machine.
+- **PostgreSQL Port Availability**: Ensure that port `5432` (the default PostgreSQL port) is **not** being used by another database instance on your machine.
 
 ---
 
-## Introduction to the Platform
+## Project Structure Overview
 
-The NFT Real Estate Marketplace is a decentralized application (dApp) built on the Solana blockchain. It allows users to:
+Here's a brief overview of the project's directory structure:
 
-- **Mint Real Estate NFTs**: Tokenize real estate properties as NFTs.
-- **List NFTs for Sale**: Set a price and list your NFTs on the marketplace.
-- **Buy NFTs**: Browse listed NFTs and purchase them directly from the marketplace.
-- **View Owned NFTs**: Access a personalized profile to view all NFTs you own.
+```
+nft-marketplace/
+├── anchor/
+│   ├── programs/
+│   │   └── nft-marketplace/
+│   │       └── src/
+│   │           ├── errors.rs
+│   │           ├── instructions/
+│   │           │   ├── buy.rs
+│   │           │   ├── list.rs
+│   │           │   ├── metadata.rs
+│   │           │   ├── mint.rs
+│   │           │   └── mod.rs
+│   │           ├── lib.rs
+│   │           └── state.rs
+│   └── tests/
+├── back-end/
+└── front-end/
+```
+
+### Directories Explained
+
+- **`anchor/`**: Contains the NFT Marketplace Solana program (smart contract) written in Rust using Anchor.
+
+  - **`errors.rs`**: Defines custom error types.
+
+  - **`instructions/`**: Contains instruction handlers.
+
+    - **`buy.rs`**: Logic for buying NFTs.
+
+    - **`list.rs`**: Logic for listing NFTs.
+
+    - **`metadata.rs`**: Logic for handling NFT metadata.
+
+    - **`mint.rs`**: Logic for minting NFTs.
+
+    - **`mod.rs`**: Module declarations.
+
+  - **`lib.rs`**: Main library file—the entry point of our Solana program.
+
+  - **`state.rs`**: Defines program accounts and state, saved for listed NFTs.
+
+- **`back-end/`**: Contains the Rust backend application, essentially the server that stores the listed NFTs and interacts with the local database.
+
+- **`front-end/`**: Contains the React frontend application.
 
 ---
 
-## Building Docker Images and Starting Containers
+## Setting up the Project
 
-### 1. Check port `5432` and ensure no service is running on port 5432 (this is for our backend)
+### 4.1 Building and Running with Docker Compose (easiest setup)
 
-   ```sh
-   sudo lsof -i -P -n | grep 5432
-   ```
-   To stop existing services:
-   ```sh
-   sudo service postgresql stop
-   # or
-   docker stop <container_id_using_5432>
-   docker rm <container_id>
-   ```
+#### 1. Check Port Availability
 
-### 2. Build and Run the PostgreSQL Database Container
+Ensure that port `5432` is free:
+
+```bash
+sudo lsof -i -P -n | grep 5432
+```
+
+If another service is using port `5432`, stop it:
+
+```bash
+# For system services
+sudo service postgresql stop
+
+# For Docker containers
+docker stop <container_id_using_5432>
+docker rm <container_id_using_5432>
+```
+
+#### 2. Build and Start the Services
+
+Run the following command in the root directory:
+
+```bash
+docker compose up --build
+```
+
+This command will:
+
+- Build the Docker images for the backend and frontend.
+- Start the PostgreSQL database, backend, and frontend services.
+- Use the specified Docker Compose configuration.
+
+#### 3. Verify Services Are Running
+
+In a separate terminal, run:
+
+```bash
+docker ps
+```
+
+You should see `nft_db`, `nft_backend`, and `nft_frontend` running.
+
+#### 4. Access the Application
+
+Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to access the frontend application.
+
+#### 5. Stopping the Services
+
+To stop the services, press `CTRL + C` in the terminal where `docker compose` is running, then run:
+
+```bash
+docker compose down
+```
+
+---
+
+### 4.2 Building and Running Each Docker Image Manually (easy)
+
+#### 1. Check Port Availability (same steps as above)
+
+#### 2. Build and Run the PostgreSQL Database Container
 
 ```bash
 # Create a Docker network
 docker network create nft_network
 
 # Run the PostgreSQL container
-docker run --name limeapi-db \
- --network limeapi-network \
- -e POSTGRES_USER=postgres \
- -e POSTGRES_PASSWORD=postgres \
- -e POSTGRES_DB=nft_db \
- -p 5432:5432 \
- -d postgres
+docker run --name nft_db \
+  --network nft_network \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=nft_db \
+  -p 5432:5432 \
+  -d postgres
 ```
 
-### 3. Build and Run the Backend Container
+#### 3. Build and Run the Backend Container
 
 ```bash
 # Navigate to the backend directory
-cd backend
+cd back-end
 
 # Build the Docker image
-docker build -t my_backend_image .
+docker build -t nft_backend_image .
 
 # Run the backend container
 docker run -d \
-  --name my_backend \
+  --name nft_backend \
   --network nft_network \
-  -e DATABASE_URL=postgres://postgres:postgres@my_postgres:5432/nft_db \
+  -e DATABASE_URL=postgres://postgres:postgres@nft_db:5432/nft_db \
   -e API_PORT=5000 \
-  -e FRONTEND_ORIGIN=http://localhost:5173
+  -e FRONTEND_ORIGIN=http://localhost:5173 \
   -p 5000:5000 \
-  my_backend_image
+  nft_backend_image
 
 # Navigate back to the root directory
 cd ..
 ```
 
-### 4. Build and Run the Frontend Container
+#### 4. Build and Run the Frontend Container
 
 ```bash
 # Navigate to the frontend directory
-cd frontend
+cd front-end
 
 # Build the Docker image
-docker build -t my_frontend_image .
+docker build -t nft_frontend_image .
 
 # Run the frontend container
 docker run -d \
-  --name my_frontend \
+  --name nft_frontend \
   --network nft_network \
   -p 5173:5173 \
-  my_frontend_image
-
-# Navigate back to the root directory
-cd ..
+  nft_frontend_image
 ```
 
-### 5. Verify the Containers Are Running
+#### 5. Verify the Containers Are Running
 
 ```bash
 docker ps
 ```
 
-You should see `my_postgres`, `my_backend`, and `my_frontend` running.
+You should see `nft_db`, `nft_backend`, and `nft_frontend` running.
 
-### 6. Access the Application
+#### 6. Access the Application
 
-Open your browser and navigate to `http://localhost:5173` to access the frontend application.
+Open your browser and navigate to [http://localhost:5173](http://localhost:5173) to access the frontend application.
 
 ---
 
-## Manually Building and Running the Frontend and Backend
+### 4.3 Manually Building and Running the Frontend and Backend
 
 If you prefer to run the frontend and backend without Docker, follow these steps:
 
-### 1. Start the PostgreSQL Database Locally
+#### 1. Start the PostgreSQL Database Locally
 
 Ensure you have PostgreSQL installed locally and running on port `5432`. Create a database named `nft_db`.
 
-### 2. Running the Backend
+#### 2. Running the Backend
 
 ```bash
 # Navigate to the backend directory
-cd backend
+cd back-end
 
 # Install dependencies (if any)
 cargo build
@@ -162,47 +275,44 @@ diesel migration run
 # Run the backend application
 cargo run
 
-# Navigate back to the root directory
-cd ..
+# The backend should now be running on http://localhost:5000
 ```
 
-### 3. Running the Frontend
+#### 3. Running the Frontend
 
 ```bash
 # Navigate to the frontend directory
-cd frontend
+cd ../front-end
 
 # Install dependencies
 yarn install
 
 # Start the frontend development server
-yarn dev
+yarn dev --host
 
-# Navigate back to the root directory
-cd ..
+# The frontend should now be running on http://localhost:5173
 ```
-
-### 4. Access the Application
-
-Open your browser and navigate to `http://localhost:5173` to access the frontend development server.
 
 ---
 
-### How to Use the Platform
+### 4.4 How to Use the Platform
 
 1. **Connect Your Wallet**: Click on the wallet button in the navbar to connect your Solana wallet.
 
 2. **Mint an NFT**:
+
    - Navigate to the **Mint** page.
    - Provide the property title and metadata URI.
    - Click **Mint NFT**.
 
 3. **List an NFT for Sale**:
+
    - Go to your **Profile** page to view your owned NFTs.
    - Select an NFT and click **List NFT**.
    - Set a price in SOL and confirm the listing.
 
 4. **Buy an NFT**:
+
    - Browse the **Home** page to view listed NFTs.
    - Click on an NFT to view details.
    - Click **Buy NFT** and approve the transaction in your wallet.
@@ -211,7 +321,7 @@ Open your browser and navigate to `http://localhost:5173` to access the frontend
 
 ## Overview of Solana Programs
 
-The backend consists of Solana programs (also known as smart contracts) written in Rust using the Anchor framework. The key functionalities include:
+The backend consists of Solana programs (smart contracts) written in Rust using the Anchor framework. The key functionalities include:
 
 - **Minting NFTs**: Creates a new NFT on the Solana blockchain with associated metadata.
 
@@ -219,139 +329,66 @@ The backend consists of Solana programs (also known as smart contracts) written 
 
 - **Buying NFTs**: Enables users to purchase listed NFTs, transferring ownership and funds accordingly.
 
-### Key Programs and Scripts
-
-- **`mint`**: Mints a new NFT and assigns metadata.
-
-- **`createMetadata`**: Creates metadata for the minted NFT, including title and URI.
-
-- **`listNft`**: Lists an NFT for sale by creating a listing account with the specified price.
-
-- **`buyNft`**: Facilitates the purchase of an NFT, handling token transfers and updating ownership.
-
 ---
 
-## Running Anchor Tests
+## Tests
 
-The project includes tests written using Anchor's testing framework. These tests cover minting, listing, and buying NFTs.
+The project includes tests written using Anchor's testing framework. These tests cover minting, listing, and buying NFTs, including both good-weather and bad-weather scenarios.
 
 ### Steps to Run Tests
 
-1. **Navigate to the Program Directory**
+#### 1. Navigate to the Anchor Directory
 
 ```bash
-cd programs/nft_marketplace
+cd anchor
 ```
 
-2. **Install Dependencies**
+#### 2. Start Local Solana Test Validator with Metaplex Program
+
+Run the following command:
 
 ```bash
-anchor build
+solana-test-validator -r --bpf-program metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s tests/metaplex_token_metadata_program.so
 ```
 
-3. **Run Tests**
+- **Explanation**:
+
+  - **`-r`**: Resets the ledger.
+
+  - **`--bpf-program`**: Loads the Metaplex Token Metadata program required for NFT functionality.
+
+#### 3. Fund the Localnet Account (the one in `localnet-payer.json`)
+
+In a new terminal, run:
 
 ```bash
-anchor test
+solana airdrop 6969 DupZuZ4GKKDnzxbg7hTBexE4RzEFaBWL4Sod2R1daKhp --url http://localhost:8899
 ```
 
-### Notes on Testing
+The public key above is the one from the `localnet-payer.json` file.
 
-- **Airdropping SOL**: You may encounter issues with airdropping SOL to test accounts. If so, you can uncomment the transfer code provided in the tests to transfer SOL from the provider's wallet instead.
+#### 4. Run the Tests
 
-- **Bad-Weather Testing**: The tests include scenarios where the program is expected to fail under certain conditions, ensuring robust error handling.
+Run:
 
-### Test Code Snippet
-
-```typescript
-// Transfer SOL to buyer from provider's wallet
-const transferSolToBuyer = async () => {
-  const amount = anchor.web3.LAMPORTS_PER_SOL * 1; // Adjust the amount as needed
-  const tx = new anchor.web3.Transaction();
-  tx.add(
-    anchor.web3.SystemProgram.transfer({
-      fromPubkey: provider.wallet.publicKey,
-      toPubkey: buyerKeypair.publicKey,
-      lamports: amount,
-    })
-  );
-  await provider.sendAndConfirm(tx, [], { commitment: 'confirmed' });
-};
-// Uncomment the line below if airdrop doesn't work
-// await transferSolToBuyer();
-
-// Alternatively, use airdrop (may not work on localnet)
-await airdrop(provider.connection, buyerKeypair.publicKey);
+```bash
+anchor test --skip-local-validator
 ```
 
-**Note**: If you face issues with the airdrop function not working, it's a common problem when running tests on `localnet`. Uncommenting the transfer code allows you to proceed with the tests by manually transferring SOL.
+Or, if you prefer to just run the tests (after successfully executing `anchor build` and `anchor deploy`):
 
----
-
-## Project Structure Overview
-
-Here's a brief overview of the project's directory structure:
-
+```bash
+anchor run test -- --skip-local-validator
 ```
-nft-real-estate-marketplace/
-├── backend/
-│   ├── Cargo.toml
-│   ├── Cargo.lock
-│   ├── Dockerfile
-│   ├── src/
-│   ├── migrations/
-│   └── diesel.toml
-├── frontend/
-│   ├── package.json
-│   ├── yarn.lock
-│   ├── Dockerfile
-│   ├── public/
-│   └── src/
-│       ├── components/
-│       │   ├── pages/
-│       │   └── ui/
-│       ├── App.tsx
-│       └── main.tsx
-├── programs/
-│   └── nft_marketplace/
-│       ├── Cargo.toml
-│       ├── src/
-│       └── tests/
-├── migrations/
-│   └── init.sql
-├── Anchor.toml
-├── docker-compose.yml (if used)
-└── README.md
-```
-
-### Directories Explained
-
-- **backend/**: Contains the Rust backend application and Solana programs.
-
-- **frontend/**: Contains the React frontend application.
-
-- **programs/**: Includes Solana programs (smart contracts) written in Rust using Anchor.
-
-- **migrations/**: SQL scripts for initializing the database with initial data.
-
-- **docker-compose.yml**: (Optional) Contains Docker Compose configuration for orchestrating containers.
-
----
-
-## Additional Information
-
-- **Environment Variables**: Configure any necessary environment variables in `.env` files for both frontend and backend.
-
-- **Logging and Monitoring**: Implement logging in your backend application to monitor and debug issues.
-
-- **Security Considerations**: Ensure sensitive data like private keys and passwords are securely managed and not exposed in the codebase.
 
 ---
 
 ## Conclusion
 
-This project provides a foundational platform for tokenizing real estate assets as NFTs on the Solana blockchain. By following the steps outlined above, you can set up, run, and test the application locally.
+This project provides a foundational platform for tokenizing real estate assets as NFTs on the Solana blockchain. By following the steps outlined above, you can set up, run, and test the application locally using Docker Compose or manual setup.
 
 Feel free to contribute, raise issues, or suggest improvements!
 
 ---
+
+**Note:** Ensure all dependencies are correctly installed, and environment variables are properly set before running the application or tests. Always refer to the official documentation for detailed setup instructions for tools like Docker, Rust, Anchor, and Solana CLI.

@@ -1,61 +1,27 @@
-# version: '3.8'
-#
-# services:
-#   db:
-#     image: postgres
-#     environment:
-#       POSTGRES_USER: postgres
-#       POSTGRES_PASSWORD: postgres
-#       POSTGRES_DB: nft_marketplace
-#     volumes:
-#       - db_data:/var/lib/postgresql/data
-#       - ./db_init:/docker-entrypoint-initdb.d
-#     ports:
-#       - "5433:5433"
-#
-#   backend:
-#     build: ./back-end
-#     environment:
-#       DATABASE_URL: postgres://postgres:postgres@db:5433/nft_marketplace
-#       FRONTEND_ORIGIN: http://localhost:5713
-#     ports:
-#       - "5000:5000"
-#     depends_on:
-#       - db
-#
-#   frontend:
-#     build: ./front-end
-#     environment:
-#       VITE_BACKEND_URL: http://localhost:5000
-#     ports:
-#       - "5173:5174"
-#     depends_on:
-#       - backend
-#
-# volumes:
-#   db_data:
-
-version: '3.8'
+name: nft_marketplace
 
 services:
   db:
-    image: postgres
+    image: postgres:14
+    container_name: nft_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: nft_marketplace
-    volumes:
-      - db_data:/var/lib/postgresql/data
-      - ./db_init:/docker-entrypoint-initdb.d
+      POSTGRES_DB: nft_db
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
     networks:
       - nft_network
 
   backend:
-    build: ./back-end
+    build:
+      context: ./back-end
+    container_name: nft_backend
     environment:
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/nft_marketplace
+      DATABASE_URL: postgres://postgres:postgres@db:5432/nft_db
+      API_PORT: 5000
       FRONTEND_ORIGIN: http://localhost:5173
     ports:
       - "5000:5000"
@@ -65,19 +31,19 @@ services:
       - nft_network
 
   frontend:
-    build: ./front-end
-    environment:
-      VITE_BACKEND_URL: http://localhost:5000
+    build:
+      context: ./front-end
+    container_name: nft_frontend
     ports:
       - "5173:5173"
     depends_on:
       - backend
     networks:
       - nft_network
-
-volumes:
-  db_data: {}
+    command: yarn dev --host
 
 networks:
   nft_network: {}
 
+volumes:
+  db_data: {}

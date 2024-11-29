@@ -17,7 +17,7 @@ pub fn buy(
 ) -> Result<()> {
     let nft_listing_account = &mut ctx.accounts.nft_listing_account;
 
-    msg!("BUUUUYing");
+    msg!("Buying NFT");
     // Ensure the buyer has sent enough lamports
     require!(
         ctx.accounts.buyer.lamports() >= nft_listing_account.price,
@@ -57,7 +57,6 @@ pub fn buy(
     )?;
 
     msg!("NFT purchased successfully!");
-    msg!("NFT Listing PDA Closed?");
 
     emit!(NFTSoldEvent {
         mint: ctx.accounts.mint.key(),

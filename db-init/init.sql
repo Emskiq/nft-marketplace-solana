@@ -1,7 +1,0 @@
-CREATE TABLE IF NOT EXISTS nfts (
-    id SERIAL PRIMARY KEY,
-    mint_address VARCHAR(255) UNIQUE NOT NULL,
-    owner_address VARCHAR(255) NOT NULL,
-    price NUMERIC(10, 2) NOT NULL,
-    listed BOOLEAN NOT NULL DEFAULT FALSE
-);
