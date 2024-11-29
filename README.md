@@ -6,15 +6,14 @@ Welcome to the **NFT Real Estate Marketplace** project! This platform allows use
 
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)
-3. [Project Structure Overview](#project-structure-overview)
-4. [Setting up the Project](#setting-up-the-project)
-   - [4.1 Building and Running with Docker Compose (easiest setup)](#41-building-and-running-with-docker-compose-easiest-setup)
-   - [4.2 Building and Running Each Docker Image Manually (easy)](#42-building-and-running-each-docker-image-manually-easy)
-   - [4.3 Manually Building and Running the Frontend and Backend](#43-manually-building-and-running-the-frontend-and-backend)
-   - [4.4 How to Use the Platform](#44-how-to-use-the-platform)
+3. [Setting up the Project](#setting-up-the-project)
+    - [Building and Running with Docker Compose (easiest setup)](#building-and-running-with-docker-compose-(easiest-setup))
+    - [Building and Running Each Docker Image Manually (easy)](#building-and-running-each-docker-image-manually-(easy))
+    - [Manually Building and Running the Frontend and Backend](#manually-building-and-running-the-frontend-and-backend)
+    - [How to Use the Platform](#how-to-use-the-platform)
+4. [Project Structure Overview](#project-structure-overview)
 5. [Overview of Solana Programs](#overview-of-solana-programs)
 6. [Tests](#tests)
-   - [6.1 Steps to Run Tests](#61-steps-to-run-tests)
 7. [Conclusion](#conclusion)
 
 ---
@@ -62,61 +61,9 @@ Before you begin, ensure you have met the following requirements:
 
 ---
 
-## Project Structure Overview
-
-Here's a brief overview of the project's directory structure:
-
-```
-nft-marketplace/
-├── anchor/
-│   ├── programs/
-│   │   └── nft-marketplace/
-│   │       └── src/
-│   │           ├── errors.rs
-│   │           ├── instructions/
-│   │           │   ├── buy.rs
-│   │           │   ├── list.rs
-│   │           │   ├── metadata.rs
-│   │           │   ├── mint.rs
-│   │           │   └── mod.rs
-│   │           ├── lib.rs
-│   │           └── state.rs
-│   └── tests/
-├── back-end/
-└── front-end/
-```
-
-### Directories Explained
-
-- **`anchor/`**: Contains the NFT Marketplace Solana program (smart contract) written in Rust using Anchor.
-
-  - **`errors.rs`**: Defines custom error types.
-
-  - **`instructions/`**: Contains instruction handlers.
-
-    - **`buy.rs`**: Logic for buying NFTs.
-
-    - **`list.rs`**: Logic for listing NFTs.
-
-    - **`metadata.rs`**: Logic for handling NFT metadata.
-
-    - **`mint.rs`**: Logic for minting NFTs.
-
-    - **`mod.rs`**: Module declarations.
-
-  - **`lib.rs`**: Main library file—the entry point of our Solana program.
-
-  - **`state.rs`**: Defines program accounts and state, saved for listed NFTs.
-
-- **`back-end/`**: Contains the Rust backend application, essentially the server that stores the listed NFTs and interacts with the local database.
-
-- **`front-end/`**: Contains the React frontend application.
-
----
-
 ## Setting up the Project
 
-### 4.1 Building and Running with Docker Compose (easiest setup)
+### Building and Running with Docker Compose (easiest setup)
 
 #### 1. Check Port Availability
 
@@ -175,7 +122,7 @@ docker compose down
 
 ---
 
-### 4.2 Building and Running Each Docker Image Manually (easy)
+### Building and Running Each Docker Image Manually (easy)
 
 #### 1. Check Port Availability (same steps as above)
 
@@ -249,7 +196,7 @@ Open your browser and navigate to [http://localhost:5173](http://localhost:5173)
 
 ---
 
-### 4.3 Manually Building and Running the Frontend and Backend
+### Manually Building and Running the Frontend and Backend
 
 If you prefer to run the frontend and backend without Docker, follow these steps:
 
@@ -295,7 +242,7 @@ yarn dev --host
 
 ---
 
-### 4.4 How to Use the Platform
+### How to Use the Platform
 
 1. **Connect Your Wallet**: Click on the wallet button in the navbar to connect your Solana wallet.
 
@@ -316,6 +263,58 @@ yarn dev --host
    - Browse the **Home** page to view listed NFTs.
    - Click on an NFT to view details.
    - Click **Buy NFT** and approve the transaction in your wallet.
+
+---
+
+## Project Structure Overview
+
+Here's a brief overview of the project's directory structure:
+
+```
+nft-marketplace/
+├── anchor/
+│   ├── programs/
+│   │   └── nft-marketplace/
+│   │       └── src/
+│   │           ├── errors.rs
+│   │           ├── instructions/
+│   │           │   ├── buy.rs
+│   │           │   ├── list.rs
+│   │           │   ├── metadata.rs
+│   │           │   ├── mint.rs
+│   │           │   └── mod.rs
+│   │           ├── lib.rs
+│   │           └── state.rs
+│   └── tests/
+├── back-end/
+└── front-end/
+```
+
+### Directories Explained
+
+- **`anchor/`**: Contains the NFT Marketplace Solana program (smart contract) written in Rust using Anchor.
+
+  - **`errors.rs`**: Defines custom error types.
+
+  - **`instructions/`**: Contains instruction handlers.
+
+    - **`buy.rs`**: Logic for buying NFTs.
+
+    - **`list.rs`**: Logic for listing NFTs.
+
+    - **`metadata.rs`**: Logic for handling NFT metadata.
+
+    - **`mint.rs`**: Logic for minting NFTs.
+
+    - **`mod.rs`**: Module declarations.
+
+  - **`lib.rs`**: Main library file—the entry point of our Solana program.
+
+  - **`state.rs`**: Defines program accounts and state, saved for listed NFTs.
+
+- **`back-end/`**: Contains the Rust backend application, essentially the server that stores the listed NFTs and interacts with the local database.
+
+- **`front-end/`**: Contains the React frontend application.
 
 ---
 
