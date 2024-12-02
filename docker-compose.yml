@@ -2,7 +2,7 @@ name: nft_marketplace
 
 services:
   db:
-    image: postgres:14
+    image: postgres:13
     container_name: nft_db
     environment:
       POSTGRES_USER: postgres

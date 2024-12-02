@@ -39,7 +39,7 @@ pub fn buy(
     )?;
     msg!("Lamports transferred successfully.");
 
-    // // Transfer payment from buyer to seller
+    // // Transfer payment from buyer to seller - I personally don't like this way
     // **ctx.accounts.buyer.lamports.borrow_mut() -= listing_account.price;
     // **ctx.accounts.seller.lamports.borrow_mut() += listing_account.price;
 

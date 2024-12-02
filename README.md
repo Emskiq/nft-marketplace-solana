@@ -27,6 +27,8 @@ The NFT Real Estate Marketplace is a decentralized application (dApp) built on t
 - **Buy NFTs**: Browse listed NFTs and purchase them directly from the marketplace.
 - **View Owned NFTs**: Access a personalized profile to view all NFTs you own.
 
+[**Video Demonstration**](https://youtu.be/Ok1nwVb1Qn4?si=XXR0JwrRju5sK4SY)
+
 ---
 
 ## Prerequisites
@@ -250,6 +252,8 @@ yarn dev --host
 
    - Navigate to the **Mint** page.
    - Provide the property title and metadata URI.
+     - Right now I am using uri format like [this one uploaded in another repo of mine](https://raw.githubusercontent.com/Emskiq/solana-intro/refs/heads/master/nfts/assets/example2.json)
+     - You can check [my repository for some example uri json files](https://github.com/Emskiq/solana-intro/tree/master/nfts/assets)
    - Click **Mint NFT**.
 
 3. **List an NFT for Sale**:
@@ -263,6 +267,9 @@ yarn dev --host
    - Browse the **Home** page to view listed NFTs.
    - Click on an NFT to view details.
    - Click **Buy NFT** and approve the transaction in your wallet.
+
+[**Video Demonstration**](https://youtu.be/Ok1nwVb1Qn4?si=XXR0JwrRju5sK4SY)
+
 
 ---
 
